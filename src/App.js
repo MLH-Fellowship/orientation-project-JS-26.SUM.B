@@ -1,9 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import AddExperience from "./AddExperience";
+import UserInformation from "./UserInformation";
 
 function App() {
   const [isAddingExperience, setIsAddingExperience] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    fetch("/resume/user_information")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data && data.name) setUserInfo(data);
+      })
+      .catch(() => {});
+  }, []);
 
   if (isAddingExperience) {
     return (
@@ -16,6 +27,10 @@ function App() {
   return (
     <div className="App">
       <h1>Resume Builder</h1>
+      <UserInformation
+        userInfo={userInfo}
+        onSave={(data) => setUserInfo(data)}
+      />
       <div className="resumeSection">
         <h2>Experience</h2>
         <p>Experience Placeholder</p>
