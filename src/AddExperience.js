@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { findSpellingErrors, loadChecker } from "./spellcheck";
 
 function AddExperience({ onBack }) {
   const [formData, setFormData] = useState({
@@ -9,9 +10,18 @@ function AddExperience({ onBack }) {
     description: "",
     logo: "",
   });
+  const [spellingErrors, setSpellingErrors] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSpellCheck = async () => {
+    const checker = await loadChecker();
+    const text = [formData.title, formData.company, formData.description].join(
+      " "
+    );
+    setSpellingErrors(findSpellingErrors(text, checker));
   };
 
   const handleSubmit = (e) => {
@@ -100,7 +110,22 @@ function AddExperience({ onBack }) {
         <button type="button" onClick={onBack}>
           Cancel
         </button>
+        <button type="button" onClick={handleSpellCheck}>
+          Check Spelling
+        </button>
       </form>
+      {spellingErrors !== null &&
+        (spellingErrors.length > 0 ? (
+          <ul>
+            {spellingErrors.map((error, index) => (
+              <li key={index}>
+                {error.before} → {error.after}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No spelling errors found</p>
+        ))}
     </div>
   );
 }
