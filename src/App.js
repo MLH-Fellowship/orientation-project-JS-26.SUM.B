@@ -1,43 +1,62 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./App.css";
-import AddExperience from "./AddExperience";
+import ExportResume from "./ExportResume";
+import BuildPDF from "./BuildPDF";
+import LogoUpload from "./LogoUpload";
 
 function App() {
-  const [isAddingExperience, setIsAddingExperience] = useState(false);
+  const [details, setDetails] = useState({ name: "", email: "" });
+  const [experience, setExperience] = useState([]);
+  const [education, setEducation] = useState([]);
+  const [skills, setSkills] = useState([]);
+  const [Logo, setLogo] = useState(null); 
 
-  if (isAddingExperience) {
-    return (
-      <div className="App">
-        <AddExperience onBack={() => setIsAddingExperience(false)} />
-      </div>
-    );
-  }
+  const addExperience = () => {
+    setExperience((prev) => [
+      ...prev,
+      { company: "", role: "", dates: "", description: "" },
+    ]);
+  };
+
+  const addEducation = () => {
+    setEducation((prev) => [...prev, { institution: "", degree: "" }]);
+  };
+
+  const addSkill = () => {
+    setSkills((prev) => [...prev, ""]);
+  };
+
+  const resumeData = BuildPDF({ details, experience, education, skills, Logo });
 
   return (
     <div className="App">
       <h1>Resume Builder</h1>
+
+      <LogoUpload onLogoChange={setLogo} />
+
       <div className="resumeSection">
         <h2>Experience</h2>
         <p>Experience Placeholder</p>
-        <button onClick={() => setIsAddingExperience(true)}>
-          Add Experience
-        </button>
+        <button onClick={addExperience}>Add Experience</button>
         <br></br>
       </div>
+
       <div className="resumeSection">
         <h2>Education</h2>
         <p>Education Placeholder</p>
-        <button>Add Education</button>
+        <button onClick={addEducation}>Add Education</button>
         <br></br>
       </div>
+
       <div className="resumeSection">
         <h2>Skills</h2>
         <p>Skill Placeholder</p>
-        <button>Add Skill</button>
+        <button onClick={addSkill}>Add Skill</button>
         <br></br>
       </div>
+
       <br></br>
-      <button>Export</button>
+      <ExportResume resumeData={resumeData} />
     </div>
   );
 }

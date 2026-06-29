@@ -27,3 +27,25 @@ button {
   border-radius: 4px;
   background-color: rgb(248 185 42);
 }
+.dropzone {
+  border: 2px dashed #999;
+  border-radius: 6px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.dropzone-active {
+  border-color: #4a90d9;
+  background-color: #f0f7ff;
+}
+
+.logo-preview {
+  margin-top: 10px;
+}
+
+.logo-preview img {
+  border-radius: 6px;
+  object-fit: cover;
+}
