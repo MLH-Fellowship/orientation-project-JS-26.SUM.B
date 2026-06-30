@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import "./App.css";
 import AddEducation from "./AddEducation";
 import AddExperience from "./AddExperience";
+import AddSkill from "./AddSkill";
 
 function App() {
   const [isAddingEducation, setIsAddingEducation] = useState(false);
   const [isAddingExperience, setIsAddingExperience] = useState(false);
+  const [isAddingSkill, setIsAddingSkill] = useState(false);
 
   if (isAddingEducation) {
     return (
@@ -19,6 +21,14 @@ function App() {
     return (
       <div className="App">
         <AddExperience onBack={() => setIsAddingExperience(false)} />
+      </div>
+    );
+  }
+
+  if (isAddingSkill) {
+    return (
+      <div className="App">
+        <AddSkill onBack={() => setIsAddingSkill(false)} />
       </div>
     );
   }
@@ -45,7 +55,7 @@ function App() {
       <div className="resumeSection">
         <h2>Skills</h2>
         <p>Skill Placeholder</p>
-        <button>Add Skill</button>
+        <button onClick={() => setIsAddingSkill(true)}>Add Skill</button>
         <br></br>
       </div>
       <br></br>
