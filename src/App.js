@@ -1,9 +1,19 @@
 import React, { useState } from "react";
 import "./App.css";
+import AddEducation from "./AddEducation";
 import AddExperience from "./AddExperience";
 
 function App() {
+  const [isAddingEducation, setIsAddingEducation] = useState(false);
   const [isAddingExperience, setIsAddingExperience] = useState(false);
+
+  if (isAddingEducation) {
+    return (
+      <div className="App">
+        <AddEducation onBack={() => setIsAddingEducation(false)} />
+      </div>
+    );
+  }
 
   if (isAddingExperience) {
     return (
@@ -27,7 +37,9 @@ function App() {
       <div className="resumeSection">
         <h2>Education</h2>
         <p>Education Placeholder</p>
-        <button>Add Education</button>
+        <button onClick={() => setIsAddingEducation(true)}>
+          Add Education
+        </button>
         <br></br>
       </div>
       <div className="resumeSection">
