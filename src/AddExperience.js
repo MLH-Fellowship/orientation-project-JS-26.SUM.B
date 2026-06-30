@@ -14,6 +14,24 @@ function AddExperience({ onBack }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const readLogoFile = (file) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData({ ...formData, logo: reader.result });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleLogoChange = (e) => {
+    readLogoFile(e.target.files[0]);
+  };
+
+  const handleLogoDrop = (e) => {
+    e.preventDefault();
+    readLogoFile(e.dataTransfer.files[0]);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch("/resume/experience", {
@@ -87,14 +105,24 @@ function AddExperience({ onBack }) {
           />
         </div>
         <div>
-          <label>Logo URL:</label>
-          <input
-            type="text"
-            name="logo"
-            value={formData.logo}
-            onChange={handleChange}
-            required
-          />
+          <label>Logo:</label>
+          <div
+            className="logoDropZone"
+            onDrop={handleLogoDrop}
+            onDragOver={(e) => e.preventDefault()}
+          >
+            <input
+              type="file"
+              name="logo"
+              accept="image/*"
+              onChange={handleLogoChange}
+            />
+            {formData.logo ? (
+              <img src={formData.logo} alt="Logo preview" width="80" />
+            ) : (
+              <span>Drag and drop an image here, or choose a file</span>
+            )}
+          </div>
         </div>
         <button type="submit">Submit</button>
         <button type="button" onClick={onBack}>
